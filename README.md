@@ -9,7 +9,8 @@ Solutions make use of `cargo-aoc` code helper ([here](https://github.com/gobanos
 All solutions linked below:
 | Day | Title | 1 :star: | 2 :star: | Solution | Rating |
 |:-|:-|:-|:-|:-|:-|
-| [01](https://adventofcode.com/2025/day/1)  | Secret Entrance                 | 5.49µs | 27.0µs | [day01.rs](./src/day01.rs) |  |
+| [01](https://adventofcode.com/2025/day/1)  | Secret Entrance                 | 5.49µs | 27.0µs | [day01.rs](./src/day01.rs) | :sunglasses: |
+| [02](https://adventofcode.com/2025/day/2)  | Gift Shop                       | 17.4ms | 108ms  | [day02.rs](./src/day02.rs) | :smirk: |
 
 
 ## Notes
