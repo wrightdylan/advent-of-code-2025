@@ -73,15 +73,56 @@ pub fn solve_part2(input: &Grid<Map>) -> usize {
             removal_guard.extend(removal_inner);
         });
 
-        if !removal.lock().unwrap().is_empty() {
+        if removal.lock().unwrap().is_empty() {
+            removeables = false;
+        } else {
             map.place_at(&removal.lock().unwrap().clone(), Map::Floor);
             removal.lock().unwrap().clear();
-        } else {
-            removeables = false
         }
     }
 
     sum.load(Ordering::Relaxed)
+}
+
+#[aoc(day4, part2, Alternative)]
+pub fn solve_part2_alternative(input: &Grid<Map>) -> usize {
+    let mut map = input.clone();
+    let mut queue = Vec::new();
+    let mut next = HashSet::new();
+    let mut sum = 0;
+    let mut removeables = true;
+
+    for row in 0..input.height {
+        for col in 0..input.width {
+            if input[(row, col)] == Map::Paper && map.neighbours_cando_count(&(row, col), Map::Paper) < 4 {
+                queue.push((row, col));
+            }
+        }
+    }
+
+    while removeables {
+        let mut removal = Vec::new();
+
+        for pos in &queue {
+            let neighbours = map.neighbours_cando_as(pos, Map::Paper);
+            if map[*pos] == Map::Paper && neighbours.len() < 4 {
+                removal.push(pos);
+                next.extend(neighbours);
+                sum += 1;
+            }
+        }
+
+        if removal.is_empty() {
+            removeables = false;
+        } else {
+            map.place_at(removal, Map::Floor);
+            queue.clear();
+            queue.extend(next.iter().cloned());
+            next.clear();
+        }
+    }
+
+    sum
 }
 
 #[cfg(test)]
@@ -107,5 +148,10 @@ mod tests {
     #[test]
     fn part2_test() {
         assert_eq!(solve_part2(&input_generator(TEST)), 43);
+    }
+
+    #[test]
+    fn part2_test_alt() {
+        assert_eq!(solve_part2_alternative(&input_generator(TEST)), 43);
     }
 }

@@ -12,7 +12,7 @@ All solutions linked below:
 | [01](https://adventofcode.com/2025/day/1)  | Secret Entrance                 | 5.49µs | 27.0µs | [day01.rs](./src/day01.rs) | :sunglasses: |
 | [02](https://adventofcode.com/2025/day/2)  | Gift Shop                       | 17.4ms | 34.0ms | [day02.rs](./src/day02.rs) | :smirk: |
 | [03](https://adventofcode.com/2025/day/3)  | Lobby                           | 168µs  | 2.86ms | [day03.rs](./src/day03.rs) | :astonished: |
-| [04](https://adventofcode.com/2025/day/4)  | Printing Department             | 3.45ms | 18.7ms | [day04.rs](./src/day04.rs) | :persevere: |
+| [04](https://adventofcode.com/2025/day/4)  | Printing Department             | 3.45ms | 12.6ms | [day04.rs](./src/day04.rs) | :persevere: |
 
 
 ## Notes

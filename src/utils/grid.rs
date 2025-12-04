@@ -133,6 +133,31 @@ impl<T: Clone + Copy + PartialEq> Grid<T> {
         neighbours
     }
 
+    /// Counts the number of neighbouring adjacent points in a cardinal and
+    /// orthogonal pattern that match a given entity type from a given position.
+    pub fn neighbours_cando_count<U: PartialEq>(&self, pos: &(usize, usize), ent_type: U) -> usize
+    where
+        T: PartialEq<U>,
+    {
+        let mut neighbours = 0;
+
+        for (dy, dx) in &CANDO {
+            let new_y = (pos.1 as i32 + dy) as usize;
+            let new_x = (pos.0 as i32 + dx) as usize;
+
+            if new_x < self.width && new_y < self.height {
+                let idx = new_y * self.width + new_x;
+                if let Some(entity) = self.entity.get(idx) {
+                    if *entity == ent_type {
+                        neighbours += 1;
+                    }
+                }
+            }
+        }
+
+        neighbours
+    }
+
     /// Creates a list of all valid neighbouring adjacent points in a cardinal
     /// and orthogonal pattern from a given position and includes the appropriate
     /// enum.
@@ -184,6 +209,31 @@ impl<T: Clone + Copy + PartialEq> Grid<T> {
                 if let Some(entity) = self.entity.get(idx) {
                     if *entity == ent_type {
                         neighbours.push((new_x, new_y));
+                    }
+                }
+            }
+        }
+
+        neighbours
+    }
+
+    /// Counts the number of neighbouring adjacent points in an orthogonal
+    /// pattern that match a given entity type from a given position.
+    pub fn neighbours_ortho_count<U: PartialEq>(&self, pos: &(usize, usize), ent_type: U) -> usize
+    where
+        T: PartialEq<U>,
+    {
+        let mut neighbours = 0;
+
+        for (dy, dx) in &ORTHO {
+            let new_y = (pos.1 as i32 + dy) as usize;
+            let new_x = (pos.0 as i32 + dx) as usize;
+
+            if new_x < self.width && new_y < self.height {
+                let idx = new_y * self.width + new_x;
+                if let Some(entity) = self.entity.get(idx) {
+                    if *entity == ent_type {
+                        neighbours += 1;
                     }
                 }
             }
