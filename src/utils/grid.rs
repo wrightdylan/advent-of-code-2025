@@ -81,6 +81,17 @@ impl<T: Clone + Copy + PartialEq> Grid<T> {
         points
     }
 
+    pub fn is_valid(&self, pos: &(usize, usize), dir: Ortho) -> bool {
+        match dir {
+            Ortho::North => if pos.1 == 0 { return false },
+            Ortho::East => if pos.0 == self.width - 1 { return false },
+            Ortho::South => if pos.1 == self.height - 1 { return false },
+            Ortho::West => if pos.0 == 0 { return false },
+        }
+
+        true
+    }
+
     /// Creates a list of all valid neighbouring adjacent points in a cardinal
     /// and orthogonal pattern from a given position.
     pub fn neighbours_cando(&self, pos: &(usize, usize)) -> Vec<(usize, usize)> {
