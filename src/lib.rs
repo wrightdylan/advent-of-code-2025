@@ -4,6 +4,7 @@ extern crate aoc_runner_derive;
 pub mod day01;
 pub mod day02;
 pub mod day03;
+pub mod day04;
 
 aoc_lib! { year = 2025 }
 
@@ -17,5 +18,3 @@ pub mod prelude {
     pub use std::hash::Hash;
     pub use std::ops::{Index, IndexMut};
 }
-
-pub use prelude::*;
