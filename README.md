@@ -14,7 +14,7 @@ All solutions linked below:
 | [03](https://adventofcode.com/2025/day/3)  | Lobby                           | 168µs  | 2.86ms | [day03.rs](./src/day03.rs) | :astonished: |
 | [04](https://adventofcode.com/2025/day/4)  | Printing Department             | 3.45ms | 12.6ms | [day04.rs](./src/day04.rs) | :persevere: |
 | [05](https://adventofcode.com/2025/day/5)  | Cafeteria                       | 298µs  | 8.43µs | [day05.rs](./src/day05.rs) | :scream: |
-
+| [06](https://adventofcode.com/2025/day/6)  | Trash Compactor                 | 3.57µs | 72.8µs | [day06.rs](./src/day06.rs) | :no_mouth: |
 
 ## Notes
 1. I'll revisit day 2 again as I think I can improve the algorithm.
@@ -22,3 +22,4 @@ All solutions linked below:
 3. Solutions should be run in both development and release profiles to see timing differences.
 4. Day 4 part 2 was a tough one to run in parallel.
 5. Day 5 initially required 4.9TB of RAM. Fortunately there was another data structure to the rescue.
+6. Day 6 part 1 was pretty standard. Part 2 could have been easier, but I wanted a unified solution for both parts.
