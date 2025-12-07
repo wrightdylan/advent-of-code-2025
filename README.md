@@ -15,6 +15,7 @@ All solutions linked below:
 | [04](https://adventofcode.com/2025/day/4)  | Printing Department             | 3.45ms | 12.6ms | [day04.rs](./src/day04.rs) | :persevere: |
 | [05](https://adventofcode.com/2025/day/5)  | Cafeteria                       | 298µs  | 8.43µs | [day05.rs](./src/day05.rs) | :scream: |
 | [06](https://adventofcode.com/2025/day/6)  | Trash Compactor                 | 3.57µs | 72.8µs | [day06.rs](./src/day06.rs) | :no_mouth: |
+| [07](https://adventofcode.com/2025/day/7)  | Laboratories                    | 102µs  | 275µs  | [day07.rs](./src/day07.rs) | :anguished: |
 
 ## Notes
 1. I'll revisit day 2 again as I think I can improve the algorithm.
@@ -23,3 +24,4 @@ All solutions linked below:
 4. Day 4 part 2 was a tough one to run in parallel.
 5. Day 5 initially required 4.9TB of RAM. Fortunately there was another data structure to the rescue.
 6. Day 6 part 1 was pretty standard. Part 2 could have been easier, but I wanted a unified solution for both parts.
+7. I sometimes struggle with recursive functions.
