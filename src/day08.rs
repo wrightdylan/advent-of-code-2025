@@ -1,11 +1,11 @@
 use crate::prelude::*;
 
-type Distances = Vec<(u32, (usize, usize))>;
-type Points = Vec<Vec<f32>>;
+type Distances = Vec<(usize, (usize, usize))>;
+type Points = Vec<Vec<isize>>;
 
 #[aoc_generator(day8)]
 pub fn input_generator(input: &str) -> (Points, Distances) {
-    let points: Vec<Vec<f32>> = input
+    let points: Vec<Vec<isize>> = input
         .lines()
         .map(|line| line
             .split(',')
@@ -15,13 +15,14 @@ pub fn input_generator(input: &str) -> (Points, Distances) {
             ).collect()
         ).collect();
 
-    fn calc_eucl_dist(points: &Vec<Vec<f32>>, idx1: usize, idx2: usize) -> f32 {
+    // Sqrt dropped as it's not really necessary - the actual distance isn't
+    // important, just need some way to order distances.
+    fn calc_eucl_dist(points: &Vec<Vec<isize>>, idx1: usize, idx2: usize) -> usize {
         (
-            (points[idx1][0] - points[idx2][0]).powi(2) +
-            (points[idx1][1] - points[idx2][1]).powi(2) +
-            (points[idx1][2] - points[idx2][2]).powi(2)
-        )
-        .sqrt()
+            (points[idx1][0] - points[idx2][0]).pow(2) +
+            (points[idx1][1] - points[idx2][1]).pow(2) +
+            (points[idx1][2] - points[idx2][2]).pow(2)
+        ) as usize
     }
 
     fn normalise_coords(col: usize, row: usize) -> (usize, usize) {
@@ -38,13 +39,10 @@ pub fn input_generator(input: &str) -> (Points, Distances) {
         .flat_map(|col| (col + 1..size).map(move |row| (row, col)))
         .filter(|&(row, col)| row > col)
         .for_each(|(row, col)| {
-            let distance = calc_eucl_dist(&points, col, row);
-            if distance != 0.0 {
-                distance_set.insert((distance.to_bits(), normalise_coords(col, row)));
-            }
+            distance_set.insert((calc_eucl_dist(&points, col, row), normalise_coords(col, row)));
         });
 
-    let mut distances: Vec<(u32, (usize, usize))> = distance_set.into_iter().collect();
+    let mut distances: Vec<(usize, (usize, usize))> = distance_set.into_iter().collect();
     distances.sort_by(|(a, _), (b, _)| a.partial_cmp(b).unwrap_or(Ordering::Equal));
 
     (points, distances)
@@ -156,19 +154,14 @@ pub fn solve_part1((_, distances): &(Points, Distances)) -> usize {
 }
 
 // Passes test, but run = 6171742720 is too low
+// After modifying coordinates from f32 to integers: 6171742800
 #[aoc(day8, part2)]
 pub fn solve_part2((points, distances): &(Points, Distances)) -> usize {
     let mut groups = Vec::new();
-    let mut box_a = 0;
-    let mut box_b = 0;
     let mut idx = 0;
     let mut mark = true;
 
-    // for idx in 0..100 {
     loop {
-        if groups.len() == 1 && !mark && groups.singles(points).is_empty() {
-            break;
-        }
         let (_, coords) = distances[idx];
         
         match groups.check(&coords) {
@@ -179,27 +172,28 @@ pub fn solve_part2((points, distances): &(Points, Distances)) -> usize {
                 } else if result.len() == 2 {
                     groups.push(hashset!(coords.0, coords.1));
                 }
-                box_a = coords.0;
-                box_b = coords.1;
             },
             Err(GroupErr::MergeGroups(a, b)) => {
                 groups.merge(a, b);
-                box_a = a;
-                box_b = b;
             },
             Err(GroupErr::SameGroup) => {},
         }
 
-        if groups.len() > 1 {
+        if groups.len() > 2 {
             mark = false;
+        }
+
+        // Test for singles is needed for the test to pass. Release execution
+        // can use it, but runs faster without it.
+        if groups.len() == 1 && !mark && groups.singles(points).is_empty() {
+        // if groups.len() == 1 && !mark {
+            break;
         }
         
         idx += 1;
     }
 
-    println!("{:?}, {:?}", points[box_a], points[box_b]);
-    println!("{:?}", groups.singles(points));
-    println!("Groups: {}", groups.len());
+    let (_, (box_a, box_b)) = distances[idx];
 
     (points[box_a][0] * points[box_b][0]) as usize
 }
@@ -229,6 +223,7 @@ mod tests {
 984,92,344
 425,690,689";
 
+    // Change part 1 to run 10 connections to pass test.
     // #[test]
     // fn part1_test() {
     //     assert_eq!(solve_part1(&input_generator(TEST)), 40);
