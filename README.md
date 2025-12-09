@@ -17,6 +17,7 @@ All solutions linked below:
 | [06](https://adventofcode.com/2025/day/6)  | Trash Compactor                 | 3.57µs | 72.8µs | [day06.rs](./src/day06.rs) | :no_mouth: |
 | [07](https://adventofcode.com/2025/day/7)  | Laboratories                    | 102µs  | 275µs  | [day07.rs](./src/day07.rs) | :anguished: |
 | [08](https://adventofcode.com/2025/day/8)  | Playground                      | 2.53ms | 4.35ms | [day08.rs](./src/day08.rs) | :confounded: |
+| [09](https://adventofcode.com/2025/day/9)  | Movie Theater                   | 130µs  | 378ms  | [day09.rs](./src/day09.rs) | :cry: |
 
 ## Notes
 1. I'll revisit day 2 again as I think I can improve the algorithm.

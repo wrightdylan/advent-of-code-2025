@@ -1,0 +1,154 @@
+use crate::prelude::*;
+use rayon::prelude::*;
+use std::ops::Range;
+use std::sync::{Arc, Mutex};
+
+type Point = (usize, usize);
+type Points = Vec<(usize, usize)>;
+
+#[aoc_generator(day9)]
+pub fn input_generator(input: &str) -> Points {
+    input
+        .lines()
+        .flat_map(|line| {
+            let mut parts = line.split(',');
+            Some((parts.next().unwrap().parse().unwrap(), parts.next().unwrap().parse().unwrap()))
+        })
+        .collect()
+}
+
+fn calc_area(point_a: &Point, point_b: &Point) -> usize {
+    fn delta(a: usize, b: usize) -> usize {
+        if a > b {
+            return a - b + 1;
+        } else {
+            return b - a + 1;
+        }
+    }
+
+    delta(point_a.0, point_b.0) * delta(point_a.1, point_b.1)
+}
+
+// Checks if any point is within the given rectangle
+fn bounding_box(perimeter: &HashSet<Point>, points: &Points, point_a: &usize, point_b: &usize) -> bool {
+    fn invalid_range(a: usize, b: usize) -> Range<usize> {
+        if a > b {
+            return (b + 1)..(a);
+        } else {
+            return (a + 1)..(b);
+        }
+    }
+
+    let point1 = points[*point_a];
+    let point2 = points[*point_b];
+
+    let invalid_x = invalid_range(point1.0, point2.0);
+    let invalid_y = invalid_range(point1.1, point2.1);
+
+    // This works, but is slow. It turns out using HashSets is even slower.
+    for point in perimeter {
+        if invalid_x.contains(&point.0) && invalid_y.contains(&point.1) {
+            return false;
+        }
+    }
+
+    true
+}
+
+fn generate_perimeter(input: &Points) -> HashSet<Point> {
+    let mut perimeter = HashSet::new();
+
+    fn connect_points((x1, y1): Point, (x2, y2): Point) -> Points {
+    let mut line = Vec::new();
+
+    let (start_x, end_x, start_y, end_y) = if x1 <= x2 {
+        (x1, x2, y1, y2)
+    } else {
+        (x2, x1, y2, y1)
+    };
+
+    if start_x == end_x {
+        for y in min(start_y, end_y)..=max(start_y, end_y) {
+            line.push((start_x, y));
+        }
+    } else {
+        for x in start_x..=end_x {
+            line.push((x, start_y));
+        }
+    }
+
+    line
+}
+
+    for window in input.windows(2) {
+        perimeter.extend(connect_points(window[0], window[1]));
+    }
+    perimeter.extend(connect_points(*input.last().unwrap(), input[0]));
+
+    perimeter
+}
+
+#[aoc(day9, part1)]
+pub fn solve_part1(input: &Points) -> usize {
+    let size = input.len();
+    let mut largest = 0;
+
+    (0..size)
+        .flat_map(|point_a| (point_a + 1..size).map(move |point_b| (point_b, point_a)))
+        .filter(|&(point_b, point_a)| point_b > point_a)
+        .for_each(|(point_b, point_a)| {
+            let area = calc_area(&input[point_a], &input[point_b]);
+            if area > largest {
+                largest = area;
+            }
+        });
+
+    largest
+}
+
+#[aoc(day9, part2)]
+pub fn solve_part2(input: &Points) -> usize {
+    let size = input.len();
+    let largest = Arc::new(Mutex::new(0));
+    let perimeter = generate_perimeter(input);
+
+    (0..size)
+        .into_par_iter()
+        .for_each(|point_a| {
+            (point_a + 1..size).into_par_iter().for_each(|point_b| {
+                if bounding_box(&perimeter, input, &point_a, &point_b) {
+                    let area = calc_area(&input[point_a], &input[point_b]);
+                    let mut largest_inner = largest.lock().unwrap();
+                    if area > *largest_inner {
+                        *largest_inner = area;
+                    }
+                }
+            });
+        });
+
+    *largest.lock().unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TEST: &str = "7,1
+11,1
+11,7
+9,7
+9,5
+2,5
+2,3
+7,3";
+
+    #[test]
+    fn part1_test() {
+        assert_eq!(solve_part1(&input_generator(TEST)), 50);
+    }
+
+    #[test]
+    fn part2_test() {
+        assert_eq!(solve_part2(&input_generator(TEST)), 24);
+    }
+}
