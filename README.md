@@ -28,3 +28,4 @@ All solutions linked below:
 6. Day 6 part 1 was pretty standard. Part 2 could have been easier, but I wanted a unified solution for both parts.
 7. I sometimes struggle with recursive functions.
 8. Day 8 had far too many false starts.
+9. Day 9, part 2, could possibly run a bit faster by using [coordinate compression](https://medium.com/algorithms-digest/coordinate-compression-2fff95326fb).
