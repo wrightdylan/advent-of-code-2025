@@ -18,6 +18,7 @@ All solutions linked below:
 | [07](https://adventofcode.com/2025/day/7)  | Laboratories                    | 102µs  | 275µs  | [day07.rs](./src/day07.rs) | :anguished: |
 | [08](https://adventofcode.com/2025/day/8)  | Playground                      | 2.53ms | 4.35ms | [day08.rs](./src/day08.rs) | :confounded: |
 | [09](https://adventofcode.com/2025/day/9)  | Movie Theater                   | 130µs  | 2.12ms | [day09.rs](./src/day09.rs) | :cry: |
+| [10](https://adventofcode.com/2025/day/10) | Factory                         | 1.10ms | 59.7ms | [day10.rs](./src/day10.rs) | :angry: |
 
 ## Notes
 1. I'll revisit day 2 again as I think I can improve the algorithm.
@@ -30,3 +31,4 @@ All solutions linked below:
 8. Day 8 had far too many false starts.
 9. Day 9, part 2, could possibly run a bit faster by using [coordinate compression](https://medium.com/algorithms-digest/coordinate-compression-2fff95326fb).
 10. Day 9, part 2, now incorporates coordinate compression. This has dropped run time from 378ms to 2.12ms. The original took 19s single threaded.
+11. Major dislike of having to resort to using z3.
