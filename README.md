@@ -20,6 +20,7 @@ All solutions linked below:
 | [09](https://adventofcode.com/2025/day/9)  | Movie Theater                   | 130µs  | 2.12ms | [day09.rs](./src/day09.rs) | :cry: |
 | [10](https://adventofcode.com/2025/day/10) | Factory                         | 1.10ms | 59.7ms | [day10.rs](./src/day10.rs) | :angry: |
 | [11](https://adventofcode.com/2025/day/11) | Reactor                         | 4.88µs | 42.3µs | [day11.rs](./src/day11.rs) | :fearful: |
+| [12](https://adventofcode.com/2025/day/12) | Christmas Tree Farm             | 6.34µs |        | [day12.rs](./src/day12.rs) | :christmas_tree: |
 
 ## Notes
 1. I'll revisit day 2 again as I think I can improve the algorithm.
